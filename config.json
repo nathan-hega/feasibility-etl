@@ -1,0 +1,6 @@
+{
+  "jira_api_endpoint": "http://www.google.com",
+  "jira_api_version": "2",
+  "jira_api_jql": "issuetype = 'Feasibility Review' and 'Development Estimate (hours)' != 0 and status = done AND resolution = done",
+  "supplemental_threshold_percentage": "20"
+}

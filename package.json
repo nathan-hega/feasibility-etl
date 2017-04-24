@@ -1,0 +1,22 @@
+{
+  "name": "feasibility-etl",
+  "version": "0.0.0",
+  "description": "ETL script that integrates with the JIRA API, pulls relevant data, transforms data to meaningful structure, loads new data into postgreSQL feasibility database",
+  "main": "etl.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Nathan Hega",
+  "license": "MIT",
+  "repository": "https://github.com/nathan-hega/feasibility-etl",
+  "dependencies": {
+    "async": "^1.3.0",
+    "colors": "^1.1.2",
+    "lodash": "^3.10.0",
+    "moment": "^2.10.6",
+    "nconf": "^0.7.1",
+    "pg": "^4.4.0",
+    "pg-native": "^1.8.1",
+    "request": "^2.58.0"
+  }
+}
