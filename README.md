@@ -31,6 +31,10 @@ I created a diagram to highlight these benefits. You can see in the image below 
 
 ![diagram](https://cloud.githubusercontent.com/assets/2591298/25360172/0c410da0-2916-11e7-8a66-5b70cd9e6439.png)
 
+For insertions, the trigger procedure works in conjunction with my "get" procedures to automatically split the insert query and add the various chunks of data into the appropriate tables. This means that my ETL script can just add the feasibility data in a naive way (non-noramlized, no joins, etc...) and have the database system automatically normalize itself as rows are added!
+
+For selects, the requesting application does not need to worry about the internal structure of the database. Users can simply request data from the view without complicating their queries with nested queries and joins (which would be required if the view was not configured). 
+
 ### CTEs
 **Common Table Expressions**
 
@@ -47,7 +51,7 @@ Useage:
 The script has some handy features that are worth highlighting. 
 
 #### Error Threshold
-This ETL script was created to make several hundred network requests via the JIRA API to retrieve the relevant data to transform and parse. If some network requests fail, which they tend to do (especially when dealing with the JIRA API _cough_), I didn't want to halt the execution of the entire script. The data loaded into the database would still be valid for our purposes even if a handful of feasibilities failed to be loaded. In config.json, the key "supplemental_threshold_percentage" determines how many requests can fail before we consider the execution a failure. I utilize a percent change formula to determine the size of the data set when validating the requests. If the percent change is greater than or equal to the "supplemental_threshold_percentage", the script will fail and an error message will be displayed accordingly. If the percent change is less than the threshold, the script will continue to run and load data into the database. 
+This ETL script was created to make several hundred network requests via the JIRA API to retrieve the relevant data to transform and parse. If some network requests fail, which they tend to do (especially when dealing with the JIRA API _\*cough\*_), I didn't want to halt the execution of the entire script. The data loaded into the database would still be valid for our purposes even if a handful of feasibilities failed to be loaded. In config.json, the key "supplemental_threshold_percentage" determines how many requests can fail before we consider the execution a failure. I utilize a percent change formula to determine the size of the data set when validating the requests. If the percent change is greater than or equal to the "supplemental_threshold_percentage", the script will fail and an error message will be displayed accordingly. If the percent change is less than the threshold, the script will continue to run and load data into the database. 
 
 
 #### Logging
@@ -85,13 +89,14 @@ status: 404
 ### Development
 A couple of very important parameters to be aware of before you begin development:
 
-_note: All of these support environment variables and command line overrides - I recommend you set up permanent environment variables on your machine for username, password, and max results if you plan on developing._
+_Note: All of these support environment variables and command line overrides - I recommend you set up permanent environment variables on your machine for username, password, and max results if you plan on developing._
 
 #### max_results
 **This is crucial for development, otherwise you could overload and consequently crash the JIRA servers.** This dictates the max results returned from the initial `/api/search` call. If this number is high, the API will be crushed by a large number of requests and may crash. I recommend using a small, single digit number during development. If testing with larger data sets is necessary, be sure to test during low load hours.
 
 #### username / password
 **username** - JIRA API username (can use your JIRA sign in credentials)
+
 **password** - JIRA API password (can use your JIRA sign in credentials)
 
 Example: `node etl.js --username "username" --password "password" --max_results 3`
